@@ -225,3 +225,5 @@ venv/
 instance/
 
 database.db
+
+.env
