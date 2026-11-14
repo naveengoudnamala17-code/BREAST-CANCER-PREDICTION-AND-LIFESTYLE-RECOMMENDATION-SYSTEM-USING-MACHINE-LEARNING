@@ -73,6 +73,7 @@ The Random Forest model achieved the following results on the test dataset:
 | Specificity | 97.83% |
 | F1 Score | 95.83% |
 | ROC-AUC | 0.9955 |
+
 ## Project Workflow
 
 1. Dataset loading
