@@ -227,3 +227,5 @@ instance/
 database.db
 
 .env
+
+static/reports/*.pdf
