@@ -4,9 +4,11 @@ An MCA final-year project that uses Machine Learning to predict breast cancer an
 
 ## About the Project
 
-This project aims to predict whether a breast tumour is Benign or Malignant using the Wisconsin Breast Cancer Dataset (WBCD).
+This project aims to classify breast tumours as Benign or Malignant using the Wisconsin Breast Cancer Dataset (WBCD).
 
-A Random Forest machine learning model is used to analyse nine diagnostic features and generate predictions through a Flask-based web application.
+A Random Forest Classifier is trained using nine diagnostic features. The trained model is integrated into a Flask-based web application that allows users to enter patient details and obtain prediction results.
+
+The application also provides prediction confidence, an estimated risk level, general lifestyle recommendations, prediction history, and PDF reports.
 
 ## Key Features
 
@@ -16,7 +18,7 @@ A Random Forest machine learning model is used to analyse nine diagnostic featur
 - Estimated risk level
 - General health and lifestyle recommendations
 - Patient prediction history
-- Dashboard for prediction statistics
+- Dashboard with prediction statistics
 - PDF report generation
 
 ## Technologies Used
@@ -35,9 +37,9 @@ A Random Forest machine learning model is used to analyse nine diagnostic featur
 
 ## Dataset
 
-Wisconsin Breast Cancer Dataset (WBCD).
+The project uses the Wisconsin Breast Cancer Dataset (WBCD).
 
-The model uses nine diagnostic features:
+The model uses the following nine diagnostic features:
 
 1. Clump Thickness
 2. Uniformity of Cell Size
@@ -51,13 +53,44 @@ The model uses nine diagnostic features:
 
 ## Machine Learning Model
 
-Random Forest Classifier is used for classification.
+The Random Forest Classifier is used for binary classification.
 
 The model predicts two classes:
 
 - Benign
 - Malignant
 
-## Project Purpose
+## Project Workflow
 
-This application is developed for academic and educational purposes. Its predictions and recommendations are preliminary and should not be considered a professional medical diagnosis or a substitute for medical advice.
+1. Dataset loading
+2. Data preprocessing
+3. Feature selection
+4. Training the Random Forest model
+5. Model evaluation
+6. Model integration with Flask
+7. Prediction through the web application
+8. Displaying results and recommendations
+
+## Installation and Execution
+
+1. Clone the repository:
+
+   `git clone https://github.com/naveengoudnamala17-code/BREAST-CANCER-PREDICTION-AND-LIFESTYLE-RECOMMENDATION-SYSTEM-USING-MACHINE-LEARNING.git`
+
+2. Navigate to the project folder.
+
+3. Install the required dependencies:
+
+   `pip install -r requirements.txt`
+
+4. Run the application:
+
+   `python app.py`
+
+5. Open the local application address displayed in the terminal in your web browser.
+
+## Project Purpose and Disclaimer
+
+This application is developed for academic and educational purposes. It is intended as a preliminary machine learning decision-support project.
+
+The predictions, estimated risk levels, and recommendations are not professional medical diagnoses and should not replace consultation with qualified healthcare professionals.
