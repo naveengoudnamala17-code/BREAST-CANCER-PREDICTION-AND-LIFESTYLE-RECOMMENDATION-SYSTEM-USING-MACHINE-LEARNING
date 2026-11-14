@@ -2,6 +2,7 @@ import os
 import sqlite3
 import joblib
 import pandas as pd
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask import (
     Flask,
@@ -143,19 +144,24 @@ def init_database():
 
     cursor = conn.cursor()
 
+    # Patient prediction history
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS patients (
-
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-
             patient_name TEXT,
-
             prediction TEXT,
-
             confidence REAL,
-
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
 
+    # User registration and authentication
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL UNIQUE,
+            email TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL
         )
     """)
 
@@ -184,40 +190,105 @@ def home():
         url_for("login")
     )
 
+# ============================================================
+# USER REGISTRATION
+# ============================================================
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+
+    if request.method == "POST":
+
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
+
+        if not name or not email or not password or not confirm_password:
+            return render_template(
+                "register.html",
+                error="Please fill in all fields."
+            )
+
+        if password != confirm_password:
+            return render_template(
+                "register.html",
+                error="Passwords do not match."
+            )
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        try:
+
+            password_hash = generate_password_hash(password)
+
+            cursor.execute("""
+                INSERT INTO users (name, email, password_hash)
+                VALUES (?, ?, ?)
+            """, (name, email, password_hash))
+
+            conn.commit()
+            conn.close()
+
+            return render_template(
+                "register.html",
+                success="Registration successful! Please log in."
+            )
+
+        except sqlite3.IntegrityError:
+
+            conn.close()
+
+            return render_template(
+                "register.html",
+                error="Name or email already registered."
+            )
+
+    return render_template("register.html")
+
+# ============================================================
+# USER LOGIN
+# ============================================================
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
     if request.method == "POST":
 
-        name = request.form.get(
-            "name",
-            ""
-        ).strip()
+        name = request.form.get("name", "").strip()
+        password = request.form.get("password", "")
 
-        password = request.form.get(
-            "password",
-            ""
-        ).strip()
-
-        if name and password:
-
-            session["user"] = name
-
-            return redirect(
-                url_for("dashboard")
+        if not name or not password:
+            return render_template(
+                "login.html",
+                error="Please enter your name and password."
             )
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT * FROM users WHERE name = ?",
+            (name,)
+        )
+
+        user = cursor.fetchone()
+
+        conn.close()
+
+        if user and check_password_hash(user["password_hash"], password):
+
+            session["user"] = user["name"]
+
+            return redirect(url_for("dashboard"))
 
         return render_template(
             "login.html",
-            error="Please enter your name and password."
+            error="Invalid name or password."
         )
 
-    return render_template(
-        "login.html"
-    )
-
-
+    return render_template("login.html")
 # ============================================================
 # LOGOUT
 # ============================================================
