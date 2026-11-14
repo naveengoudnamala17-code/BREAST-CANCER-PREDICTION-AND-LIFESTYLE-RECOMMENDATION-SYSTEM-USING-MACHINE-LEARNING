@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient History | Breast Cancer AI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .header {
+            background:
+                linear-gradient(
+                    135deg,
+                    #101a35 0%,
+                    #17284d 55%,
+                    #1e3a6d 100%
+                );
+
+            color: white;
+            padding: 22px 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            box-shadow:
+                0 8px 25px rgba(15, 23, 42, 0.12);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #6366f1
+                );
+
+            font-size: 21px;
+
+            box-shadow:
+                0 7px 18px rgba(37, 99, 235, 0.28);
+        }
+
+        .header h1 {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+        }
+
+        .header p {
+            margin-top: 4px;
+            font-size: 10px;
+            color: #aebbd0;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .header-badge {
+            padding: 8px 13px;
+
+            border-radius: 10px;
+
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            color: #dbeafe;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* ==============================
+           MAIN
+        ============================== */
+
+        .container {
+            max-width: 1250px;
+            margin: 38px auto;
+            padding: 0 28px 45px;
+        }
+
+        /* ==============================
+           PAGE HEADING
+        ============================== */
+
+        .page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 25px;
+
+            margin-bottom: 27px;
+        }
+
+        .page-title h2 {
+            color: #111827;
+
+            font-size: 34px;
+            font-weight: 800;
+
+            letter-spacing: -1.2px;
+        }
+
+        .page-title-highlight {
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #4f46e5,
+                    #7c3aed
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title p {
+            margin-top: 8px;
+
+            color: #64748b;
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .history-icon {
+            width: 54px;
+            height: 54px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #eef2ff
+                );
+
+            border: 1px solid #dbe5ff;
+
+            color: #2563eb;
+
+            font-size: 24px;
+        }
+
+        /* ==============================
+           SUMMARY CARD
+        ============================== */
+
+        .summary-card {
+            position: relative;
+
+            background: #ffffff;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 17px;
+
+            padding: 22px 24px;
+
+            margin-bottom: 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(15, 23, 42, 0.055);
+
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 4px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #2563eb,
+                    #6366f1
+                );
+        }
+
+        .summary-text {
+            padding-left: 4px;
+        }
+
+        .summary-text h3 {
+            color: #172033;
+
+            font-size: 16px;
+            font-weight: 750;
+        }
+
+        .summary-text p {
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .patient-count {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            flex-shrink: 0;
+
+            background: #eff6ff;
+
+            border: 1px solid #dbeafe;
+
+            color: #1d4ed8;
+
+            padding: 11px 15px;
+
+            border-radius: 11px;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .count-icon {
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: #dbeafe;
+
+            font-size: 13px;
+        }
+
+        /* ==============================
+           TABLE CARD
+        ============================== */
+
+        .table-card {
+            background: #ffffff;
+
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+
+            box-shadow:
+                0 8px 28px rgba(15, 23, 42, 0.055);
+
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 23px;
+
+            border-bottom: 1px solid #edf1f6;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+        .table-header-title {
+            color: #172033;
+
+            font-size: 15px;
+            font-weight: 750;
+        }
+
+        .table-header-subtitle {
+            margin-top: 4px;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+        }
+
+        .table-status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #16a34a;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .table-status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow:
+                0 0 0 4px rgba(34, 197, 94, 0.10);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        /* ==============================
+           TABLE
+        ============================== */
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 780px;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th {
+            padding: 13px 18px;
+
+            text-align: left;
+
+            color: #64748b;
+
+            border-bottom: 1px solid #e5eaf1;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 0.7px;
+
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px 18px;
+
+            border-bottom: 1px solid #edf1f6;
+
+            color: #475569;
+
+            font-size: 11px;
+        }
+
+        tbody tr {
+            transition: 0.18s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ==============================
+           ID
+        ============================== */
+
+        .patient-id {
+            color: #94a3b8;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* ==============================
+           PATIENT
+        ============================== */
+
+        .patient-cell {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .patient-avatar {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #eef2ff
+                );
+
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .patient-name {
+            color: #1e293b;
+
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .patient-label {
+            margin-top: 3px;
+
+            color: #94a3b8;
+
+            font-size: 9px;
+        }
+
+        /* ==============================
+           RESULT BADGES
+        ============================== */
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 7px 11px;
+
+            border-radius: 9px;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 0.4px;
+        }
+
+        .badge-icon {
+            font-size: 11px;
+        }
+
+        .badge-benign {
+            background: #ecfdf3;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+        }
+
+        .badge-malignant {
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            color: #be123c;
+        }
+
+        /* ==============================
+           CONFIDENCE
+        ============================== */
+
+        .confidence-cell {
+            min-width: 125px;
+        }
+
+        .confidence-value {
+            color: #334155;
+
+            font-size: 11px;
+            font-weight: 750;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            max-width: 105px;
+
+            height: 5px;
+
+            margin-top: 7px;
+
+            border-radius: 20px;
+
+            background: #e8edf4;
+
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #6366f1
+                );
+        }
+
+        /* ==============================
+           DATE
+        ============================== */
+
+        .date-cell {
+            color: #64748b;
+
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* ==============================
+           EMPTY HISTORY
+        ============================== */
+
+        .empty {
+            text-align: center;
+
+            padding: 70px 20px;
+        }
+
+        .empty-icon {
+            width: 62px;
+            height: 62px;
+
+            margin: 0 auto 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background: #eff6ff;
+
+            border: 1px solid #dbeafe;
+
+            color: #2563eb;
+
+            font-size: 27px;
+        }
+
+        .empty h3 {
+            color: #172033;
+
+            font-size: 16px;
+            font-weight: 750;
+        }
+
+        .empty p {
+            margin-top: 7px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+        /* ==============================
+           ACTIONS
+        ============================== */
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 11px;
+
+            margin: 25px 0;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            text-decoration: none;
+
+            padding: 11px 17px;
+
+            border-radius: 10px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            border: none;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            color: white;
+
+            box-shadow:
+                0 7px 17px rgba(37, 99, 235, 0.20);
+        }
+
+        .btn-primary:hover {
+            box-shadow:
+                0 10px 22px rgba(37, 99, 235, 0.27);
+        }
+
+        .btn-secondary {
+            background: white;
+
+            color: #334155;
+
+            border: 1px solid #dbe2ea;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+        }
+
+        .btn-danger {
+            background: #fff1f2;
+
+            color: #be123c;
+
+            border: 1px solid #fecdd3;
+        }
+
+        .btn-danger:hover {
+            background: #ffe4e6;
+        }
+
+        /* ==============================
+           DISCLAIMER
+        ============================== */
+
+        .notice {
+            margin-top: 20px;
+
+            padding: 14px 17px;
+
+            border-radius: 12px;
+
+            background: #fffaf0;
+
+            border: 1px solid #fde7b0;
+
+            color: #8a6200;
+
+            font-size: 9px;
+
+            line-height: 1.6;
+        }
+
+        .notice strong {
+            color: #704f00;
+        }
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        .footer {
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 9px;
+
+            padding: 0 20px 25px;
+
+            letter-spacing: 0.2px;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 800px) {
+
+            .header {
+                padding: 19px 22px;
+            }
+
+            .header-badge {
+                display: none;
+            }
+
+            .container {
+                margin-top: 25px;
+                padding: 0 17px 40px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+            }
+
+            .page-title h2 {
+                font-size: 29px;
+            }
+
+            .summary-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .patient-count {
+                width: 100%;
+                justify-content: center;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .header-left {
+                gap: 10px;
+            }
+
+            .header-icon {
+                width: 39px;
+                height: 39px;
+                font-size: 18px;
+            }
+
+            .header h1 {
+                font-size: 17px;
+            }
+
+            .header p {
+                font-size: 8px;
+            }
+
+            .page-title h2 {
+                font-size: 25px;
+            }
+
+            .page-title p {
+                font-size: 11px;
+            }
+
+            .history-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+
+            .table-header {
+                padding: 17px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .actions .btn,
+            .actions form {
+                width: 100%;
+            }
+
+            .actions form .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==============================
+     HEADER
+============================== -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <div class="header-icon">
+            ♡
+        </div>
+
+        <div>
+
+            <h1>
+                Breast Cancer AI
+            </h1>
+
+            <p>
+                Wisconsin Diagnostic Prediction System
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="header-badge">
+        ACADEMIC AI SYSTEM
+    </div>
+
+</header>
+
+
+<!-- ==============================
+     MAIN CONTENT
+============================== -->
+
+<main class="container">
+
+
+    <!-- ==============================
+         PAGE TITLE
+    ============================== -->
+
+    <div class="page-heading">
+
+        <div class="page-title">
+
+            <h2>
+                Patient
+                <span class="page-title-highlight">
+                    History
+                </span>
+            </h2>
+
+            <p>
+                Review previously recorded AI-assisted breast cancer
+                prediction results and confidence values.
+            </p>
+
+        </div>
+
+        <div class="history-icon">
+            ◷
+        </div>
+
+    </div>
+
+
+    <!-- ==============================
+         SUMMARY CARD
+    ============================== -->
+
+    <section class="summary-card">
+
+        <div class="summary-text">
+
+            <h3>
+                Prediction Records
+            </h3>
+
+            <p>
+                Previously submitted patient cases are stored here
+                for review and academic analysis.
+            </p>
+
+        </div>
+
+        <div class="patient-count">
+
+            <span class="count-icon">
+                #
+            </span>
+
+            <span>
+                Total Records:
+                {{ patients|length }}
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==============================
+         HISTORY TABLE
+    ============================== -->
+
+    <section class="table-card">
+
+        <div class="table-header">
+
+            <div>
+
+                <div class="table-header-title">
+                    Prediction History
+                </div>
+
+                <div class="table-header-subtitle">
+                    Patient prediction records
+                </div>
+
+            </div>
+
+            {% if patients %}
+
+            <div class="table-status">
+
+                <span class="table-status-dot"></span>
+
+                Records Available
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        {% if patients %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Patient
+                        </th>
+
+                        <th>
+                            Prediction
+                        </th>
+
+                        <th>
+                            Confidence
+                        </th>
+
+                        <th>
+                            Date & Time
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for patient in patients %}
+
+                    <tr>
+
+                        <!-- ID -->
+
+                        <td class="patient-id">
+                            #{{ patient["id"] }}
+                        </td>
+
+
+                        <!-- PATIENT -->
+
+                        <td>
+
+                            <div class="patient-cell">
+
+                                <div class="patient-avatar">
+
+                                    {{ patient["patient_name"][0]|upper
+                                       if patient["patient_name"]
+                                       else "P" }}
+
+                                </div>
+
+                                <div>
+
+                                    <div class="patient-name">
+                                        {{ patient["patient_name"] }}
+                                    </div>
+
+                                    <div class="patient-label">
+                                        Prediction Case
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- PREDICTION -->
+
+                        <td>
+
+                            {% if patient["prediction"] == "Benign" %}
+
+                                <span class="badge badge-benign">
+
+                                    <span class="badge-icon">
+                                        ✓
+                                    </span>
+
+                                    BENIGN
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge badge-malignant">
+
+                                    <span class="badge-icon">
+                                        !
+                                    </span>
+
+                                    MALIGNANT
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CONFIDENCE -->
+
+                        <td class="confidence-cell">
+
+                            <div class="confidence-value">
+                                {{ patient["confidence"] }}%
+                            </div>
+
+                            <div class="confidence-bar">
+
+                                <div
+                                    class="confidence-fill"
+                                    style="width: {{ patient['confidence'] }}%;"
+                                ></div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- DATE -->
+
+                        <td class="date-cell">
+
+                            {{ patient["created_at"] }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- EMPTY HISTORY -->
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ◷
+            </div>
+
+            <h3>
+                No Prediction History
+            </h3>
+
+            <p>
+                No patient predictions have been recorded yet.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ==============================
+         ACTION BUTTONS
+    ============================== -->
+
+    <div class="actions">
+
+
+        <a
+            href="{{ url_for('prediction') }}"
+            class="btn btn-primary"
+        >
+            + New Prediction
+        </a>
+
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="btn btn-secondary"
+        >
+            ← Back to Dashboard
+        </a>
+
+
+        {% if patients %}
+
+        <form
+            action="{{ url_for('reset_counts') }}"
+            method="POST"
+            onsubmit="return confirm('Are you sure you want to delete all prediction history?');"
+        >
+
+            <button
+                type="submit"
+                class="btn btn-danger"
+            >
+                × Reset History
+            </button>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ==============================
+         DISCLAIMER
+    ============================== -->
+
+    <div class="notice">
+
+        <strong>Academic AI System:</strong>
+
+        This prediction history is maintained for educational
+        and research purposes. AI-generated predictions are
+        decision-support outputs and must not be considered
+        a substitute for professional medical diagnosis.
+
+    </div>
+
+
+</main>
+
+
+<!-- ==============================
+     FOOTER
+============================== -->
+
+<footer class="footer">
+
+    Breast Cancer AI
+    •
+    Wisconsin Diagnostic Prediction System
+    •
+    Academic Project
+
+</footer>
+
+
+</body>
+
+</html>

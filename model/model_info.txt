@@ -1,0 +1,28 @@
+WISCONSIN FNA BREAST CANCER MODEL
+=================================
+
+Model: Random Forest
+Number of Trees: 300
+
+Validation Accuracy: 95.65%
+Test Accuracy: 97.14%
+Test Precision: 95.83%
+Test Recall: 95.83%
+Test Specificity: 97.83%
+Test F1 Score: 95.83%
+Test ROC-AUC: 0.9955
+
+Class Mapping:
+0 = Benign
+1 = Malignant
+
+Features:
+- Clump Thickness
+- Uniformity of Cell Size
+- Uniformity of Cell Shape
+- Marginal Adhesion
+- Single Epithelial Cell Size
+- Bare Nuclei
+- Bland Chromatin
+- Normal Nucleoli
+- Mitoses

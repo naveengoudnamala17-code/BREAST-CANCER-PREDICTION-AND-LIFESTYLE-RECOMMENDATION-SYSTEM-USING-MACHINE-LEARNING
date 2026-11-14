@@ -1,0 +1,42 @@
+<div class="risk-box">
+
+    <div class="risk-title">
+        AI Risk Assessment
+    </div>
+
+    {% if risk_level == "Low Risk" %}
+
+        <div class="risk low-risk">
+            LOW RISK
+        </div>
+
+        <p>
+            The model indicates a lower AI-estimated risk
+            based on the submitted diagnostic features.
+        </p>
+
+    {% elif risk_level == "Medium Risk" %}
+
+        <div class="risk medium-risk">
+            MEDIUM RISK
+        </div>
+
+        <p>
+            The model indicates an intermediate AI-estimated
+            risk based on the submitted diagnostic features.
+        </p>
+
+    {% else %}
+
+        <div class="risk high-risk">
+            HIGH RISK
+        </div>
+
+        <p>
+            The model indicates a higher AI-estimated risk
+            based on the submitted diagnostic features.
+        </p>
+
+    {% endif %}
+
+</div>

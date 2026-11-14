@@ -1,0 +1,202 @@
+/* =========================================================
+   CUSTOMIZATION BUTTON
+   ========================================================= */
+
+/* =========================================================
+   CUSTOMIZATION BUTTON — TOP RIGHT
+========================================================= */
+
+.customize-btn {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+
+    background: #0d6efd;
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    padding: 12px 20px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+
+    z-index: 3000;
+
+    transition: 0.3s;
+}
+
+.customize-btn:hover {
+    transform: translateY(-2px);
+    background: #0b5ed7;
+}
+
+.customize-btn:hover {
+    transform: translateY(-2px);
+    background: #0b5ed7;
+}
+
+
+/* =========================================================
+   CUSTOMIZATION PANEL
+   ========================================================= */
+
+.custom-panel {
+    position: fixed;
+
+    top: 50%;
+    right: -360px;
+
+    transform: translateY(-50%);
+
+    width: 320px;
+
+    background: #101820;
+    color: white;
+
+    padding: 25px;
+
+    border-radius: 15px 0 0 15px;
+
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+
+    z-index: 2000;
+
+    transition: right 0.35s ease;
+}
+
+.custom-panel.active {
+    right: 0;
+}
+
+
+/* HEADER */
+
+.custom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.custom-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.custom-header button {
+    background: none;
+    border: none;
+
+    color: white;
+
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+
+/* LABELS */
+
+.custom-panel label {
+    display: block;
+
+    margin-top: 18px;
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* COLOR INPUT */
+
+.custom-panel input[type="color"] {
+    width: 100%;
+    height: 42px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    background: transparent;
+}
+
+
+/* TEXT INPUT */
+
+.custom-panel input[type="text"] {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px;
+
+    border-radius: 8px;
+    border: 1px solid #334155;
+
+    background: #17212b;
+
+    color: white;
+
+    outline: none;
+}
+
+
+/* APPLY */
+
+.apply-btn {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #0d6efd;
+    color: white;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.reset-button {
+    border: none;
+    cursor: pointer;
+
+    background: linear-gradient(
+        100deg,
+        #0caee8,
+        #9430e7
+    );
+}
+
+.reset-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(63,150,255,0.35);
+}
+
+
+/* HOVER */
+
+.apply-btn:hover {
+    background: #0b5ed7;
+}
+
+.reset-btn:hover {
+    background: #1e293b;
+}
+

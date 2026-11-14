@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Breast Cancer AI - Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #101a35;
+            --navy-light: #17264a;
+            --blue: #2563eb;
+            --indigo: #4f46e5;
+            --purple: #7c3aed;
+            --green: #16a34a;
+            --red: #dc2626;
+            --text: #172033;
+            --muted: #64748b;
+            --light-muted: #94a3b8;
+            --border: #e2e8f0;
+            --background: #f5f7fb;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background:
+                radial-gradient(
+                    circle at 10% 0%,
+                    rgba(37, 99, 235, 0.06),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(124, 58, 237, 0.05),
+                    transparent 25%
+                ),
+                var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           APP
+        ===================================================== */
+
+        .app {
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 245px;
+
+            padding: 27px 15px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #101a35 0%,
+                    #152344 55%,
+                    #0d162c 100%
+                );
+
+            box-shadow:
+                8px 0 30px rgba(15, 23, 42, 0.12);
+
+            z-index: 100;
+        }
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand {
+            padding: 5px 14px 31px;
+        }
+
+        .brand-title {
+            color: #ffffff;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            margin-top: 6px;
+            color: #8fa0bd;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.9px;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .nav-item {
+            position: relative;
+
+            height: 51px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 0 15px;
+
+            border-radius: 13px;
+
+            color: #aebbd0;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition: all 0.25s ease;
+        }
+
+        .nav-item:hover {
+            color: #ffffff;
+
+            background: rgba(255, 255, 255, 0.08);
+
+            transform: translateX(3px);
+        }
+
+        .nav-item.active {
+            color: #ffffff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            box-shadow:
+                0 8px 24px rgba(37, 99, 235, 0.28);
+        }
+
+        .nav-icon {
+            width: 25px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* =====================================================
+           TOOLTIP
+        ===================================================== */
+
+        .nav-item[data-tooltip]::after {
+            content: attr(data-tooltip);
+
+            position: absolute;
+
+            left: 72px;
+            top: 50%;
+
+            transform:
+                translateY(-50%)
+                translateX(-8px);
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            background: #0f172a;
+            color: #ffffff;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            white-space: nowrap;
+
+            opacity: 0;
+            pointer-events: none;
+
+            transition: 0.2s ease;
+
+            box-shadow:
+                0 8px 22px rgba(0, 0, 0, 0.18);
+
+            z-index: 500;
+        }
+
+        .nav-item[data-tooltip]:hover::after {
+            opacity: 1;
+
+            transform:
+                translateY(-50%)
+                translateX(0);
+        }
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        .sidebar-bottom {
+            position: absolute;
+
+            left: 15px;
+            right: 15px;
+            bottom: 23px;
+        }
+
+        .logout {
+            color: #fca5a5;
+        }
+
+        .logout:hover {
+            color: #ffffff;
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: 245px;
+
+            min-height: 100vh;
+
+            padding: 37px 42px 55px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 25px;
+
+            margin-bottom: 31px;
+        }
+
+        .header-content {
+            max-width: 800px;
+        }
+
+        .page-title {
+            font-size: 40px;
+
+            line-height: 1.12;
+
+            font-weight: 800;
+
+            letter-spacing: -1.7px;
+
+            color: #111827;
+        }
+
+        .page-title-highlight {
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #4f46e5,
+                    #7c3aed
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-description {
+            margin-top: 11px;
+
+            max-width: 720px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           USER PROFILE
+        ===================================================== */
+
+        .user-box {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            min-width: 190px;
+
+            padding: 9px 13px;
+
+            background: rgba(255, 255, 255, 0.92);
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 7px 22px rgba(15, 23, 42, 0.055);
+        }
+
+        .user-avatar {
+            position: relative;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+                );
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 6px 14px rgba(37, 99, 235, 0.22);
+        }
+
+        .user-avatar::after {
+            content: "";
+
+            position: absolute;
+
+            right: -2px;
+            bottom: -2px;
+
+            width: 10px;
+            height: 10px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            border: 2px solid #ffffff;
+        }
+
+        .user-name {
+            color: #1e293b;
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+            max-width: 115px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+        }
+
+        .user-role {
+            margin-top: 3px;
+
+            color: #94a3b8;
+
+            font-size: 9px;
+
+            font-weight: 500;
+        }
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 17px;
+
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 148px;
+
+            padding: 20px 21px;
+
+            background: #ffffff;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 17px;
+
+            box-shadow:
+                0 8px 25px rgba(15, 23, 42, 0.055);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 14px 32px rgba(15, 23, 42, 0.10);
+        }
+
+        .stat-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 4px;
+        }
+
+        .stat-blue::before {
+            background: #2563eb;
+        }
+
+        .stat-green::before {
+            background: #16a34a;
+        }
+
+        .stat-red::before {
+            background: #dc2626;
+        }
+
+        .stat-purple::before {
+            background: #7c3aed;
+        }
+
+        .stat-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+        .stat-label {
+            color: #64748b;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.65px;
+
+            text-transform: uppercase;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            font-size: 16px;
+
+            font-weight: 800;
+        }
+
+        .blue-icon {
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .green-icon {
+            color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .red-icon {
+            color: #dc2626;
+            background: #fef2f2;
+        }
+
+        .purple-icon {
+            color: #7c3aed;
+            background: #f5f3ff;
+        }
+
+        .stat-number {
+            margin-top: 17px;
+
+            color: #111827;
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+        }
+
+        .stat-description {
+            margin-top: 5px;
+
+            color: #94a3b8;
+
+            font-size: 9px;
+        }
+
+        /* =====================================================
+           DASHBOARD GRID
+        ===================================================== */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.5fr)
+                minmax(320px, 0.8fr);
+
+            gap: 21px;
+        }
+
+        /* =====================================================
+           PANELS
+        ===================================================== */
+
+        .panel {
+            background: #ffffff;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 8px 28px rgba(15, 23, 42, 0.055);
+        }
+
+        .panel-header {
+            padding: 21px 24px;
+
+            border-bottom:
+                1px solid #edf1f6;
+        }
+
+        .panel-title {
+            color: #172033;
+
+            font-size: 16px;
+
+            font-weight: 750;
+        }
+
+        .panel-subtitle {
+            margin-top: 5px;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           OVERVIEW
+        ===================================================== */
+
+        .overview {
+            padding: 23px;
+        }
+
+        .overview-intro {
+            display: flex;
+
+            align-items: center;
+
+            gap: 17px;
+
+            padding: 19px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef4ff,
+                    #f5f3ff
+                );
+
+            border:
+                1px solid #dbe5ff;
+        }
+
+        .overview-icon {
+            width: 51px;
+            height: 51px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #6366f1
+                );
+
+            color: #ffffff;
+
+            font-size: 22px;
+
+            box-shadow:
+                0 8px 18px rgba(37, 99, 235, 0.20);
+        }
+
+        .overview-heading {
+            color: #172033;
+
+            font-size: 14px;
+
+            font-weight: 750;
+        }
+
+        .overview-text {
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            line-height: 1.65;
+        }
+
+        /* =====================================================
+           FEATURE LIST
+        ===================================================== */
+
+        .feature-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 11px;
+
+            margin-top: 19px;
+        }
+
+        .feature {
+            padding: 14px;
+
+            border:
+                1px solid #e5eaf1;
+
+            border-radius: 12px;
+
+            background: #fbfcfe;
+
+            transition: 0.2s ease;
+        }
+
+        .feature:hover {
+            border-color: #cbd5e1;
+
+            background: #ffffff;
+
+            transform: translateY(-2px);
+        }
+
+        .feature-name {
+            color: #334155;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .feature-description {
+            margin-top: 4px;
+
+            color: #94a3b8;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           MODEL PERFORMANCE
+        ===================================================== */
+
+        .performance {
+            padding: 23px;
+        }
+
+        .performance-score {
+            position: relative;
+
+            padding: 23px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #f5f3ff
+                );
+
+            border:
+                1px solid #dbe5ff;
+
+            text-align: center;
+
+            overflow: hidden;
+        }
+
+        .performance-score::after {
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            right: -55px;
+            top: -55px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(99, 102, 241, 0.07);
+        }
+
+        .performance-label {
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+        .performance-number {
+            margin-top: 7px;
+
+            color: #2563eb;
+
+            font-size: 40px;
+
+            font-weight: 800;
+
+            letter-spacing: -2px;
+        }
+
+        .performance-note {
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 9px;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-list {
+            margin-top: 18px;
+        }
+
+        .status-item {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 13px 0;
+
+            border-bottom:
+                1px solid #edf1f6;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-info {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow:
+                0 0 0 4px rgba(34,197,94,0.11);
+        }
+
+        .status-name {
+            color: #334155;
+
+            font-size: 10px;
+
+            font-weight: 600;
+        }
+
+        .status-state {
+            color: #16a34a;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           NOTICE
+        ===================================================== */
+
+        .notice {
+            margin-top: 20px;
+
+            padding: 15px 17px;
+
+            border-radius: 13px;
+
+            background: #fffaf0;
+
+            border:
+                1px solid #fde7b0;
+
+            color: #8a6200;
+
+            font-size: 9px;
+
+            line-height: 1.65;
+        }
+
+        .notice strong {
+            color: #704f00;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1150px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 72px;
+            }
+
+            .brand-title,
+            .brand-subtitle {
+                display: none;
+            }
+
+            .brand {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .nav-text {
+                display: none;
+            }
+
+            .main {
+                margin-left: 72px;
+
+                padding:
+                    28px 22px 45px;
+            }
+
+            .header {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .page-title {
+                font-size: 32px;
+            }
+
+            .user-box {
+                width: fit-content;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+
+            .main {
+                padding:
+                    22px 15px 40px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .user-box {
+                width: 100%;
+            }
+
+            .overview-intro {
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         LEFT SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-title">
+                Breast Cancer AI
+            </div>
+
+            <div class="brand-subtitle">
+                WISCONSIN DIAGNOSTIC SYSTEM
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="nav-item active"
+                data-tooltip="Dashboard"
+            >
+                <span class="nav-icon">⌂</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('prediction') }}"
+                class="nav-item"
+                data-tooltip="New Prediction"
+            >
+                <span class="nav-icon">✚</span>
+                <span class="nav-text">New Prediction</span>
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="nav-item"
+                data-tooltip="Prediction History"
+            >
+                <span class="nav-icon">◷</span>
+                <span class="nav-text">History</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="nav-item logout"
+                data-tooltip="Logout"
+            >
+                <span class="nav-icon">↪</span>
+                <span class="nav-text">Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="header">
+
+            <div class="header-content">
+
+                <h1 class="page-title">
+                    Breast Cancer
+                    <span class="page-title-highlight">
+                        AI Dashboard
+                    </span>
+                </h1>
+
+                <p class="page-description">
+                    Intelligent FNA-based breast cancer prediction
+                    using the Wisconsin Diagnostic dataset and
+                    machine learning.
+                </p>
+
+            </div>
+
+
+            <div class="user-box">
+
+                <div class="user-avatar">
+                    {{ user[0]|upper if user else "U" }}
+                </div>
+
+                <div>
+
+                    <div class="user-name">
+                        {{ user }}
+                    </div>
+
+                    <div class="user-role">
+                        System User
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <section class="stats-grid">
+
+
+            <!-- TOTAL PATIENTS -->
+
+            <div class="stat-card stat-blue">
+
+                <div class="stat-header">
+
+                    <div class="stat-label">
+                        Total Patients
+                    </div>
+
+                    <div class="stat-icon blue-icon">
+                        👥
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    {{ total_patients }}
+                </div>
+
+                <div class="stat-description">
+                    Total recorded prediction cases
+                </div>
+
+            </div>
+
+
+            <!-- BENIGN -->
+
+            <div class="stat-card stat-green">
+
+                <div class="stat-header">
+
+                    <div class="stat-label">
+                        Benign Cases
+                    </div>
+
+                    <div class="stat-icon green-icon">
+                        ✓
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    {{ benign_cases }}
+                </div>
+
+                <div class="stat-description">
+                    Classified as benign
+                </div>
+
+            </div>
+
+
+            <!-- MALIGNANT -->
+
+            <div class="stat-card stat-red">
+
+                <div class="stat-header">
+
+                    <div class="stat-label">
+                        Malignant Cases
+                    </div>
+
+                    <div class="stat-icon red-icon">
+                        !
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    {{ malignant_cases }}
+                </div>
+
+                <div class="stat-description">
+                    Classified as malignant
+                </div>
+
+            </div>
+
+
+            <!-- ACCURACY -->
+
+            <div class="stat-card stat-purple">
+
+                <div class="stat-header">
+
+                    <div class="stat-label">
+                        Model Accuracy
+                    </div>
+
+                    <div class="stat-icon purple-icon">
+                        ◈
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    {{ accuracy }}%
+                </div>
+
+                <div class="stat-description">
+                    Recorded test-set performance
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DASHBOARD CONTENT
+        ================================================== -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- =================================================
+                 SYSTEM OVERVIEW
+            ================================================== -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div class="panel-title">
+                        AI System Overview
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Wisconsin Diagnostic Prediction System
+                    </div>
+
+                </div>
+
+
+                <div class="overview">
+
+
+                    <div class="overview-intro">
+
+                        <div class="overview-icon">
+                            ✦
+                        </div>
+
+                        <div>
+
+                            <div class="overview-heading">
+                                FNA-Based Breast Cancer Analysis
+                            </div>
+
+                            <div class="overview-text">
+                                The system analyzes nine diagnostic
+                                measurements from the Wisconsin
+                                Breast Cancer dataset and produces
+                                a benign or malignant prediction.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-list">
+
+
+                        <div class="feature">
+
+                            <div class="feature-name">
+                                Clump Thickness
+                            </div>
+
+                            <div class="feature-description">
+                                Measures thickness characteristics
+                                of cell clusters.
+                            </div>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-name">
+                                Cell Size Uniformity
+                            </div>
+
+                            <div class="feature-description">
+                                Represents uniformity of cell size.
+                            </div>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-name">
+                                Cell Shape Uniformity
+                            </div>
+
+                            <div class="feature-description">
+                                Represents uniformity of cell shape.
+                            </div>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-name">
+                                Marginal Adhesion
+                            </div>
+
+                            <div class="feature-description">
+                                Represents cell adhesion characteristics.
+                            </div>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-name">
+                                Bare Nuclei
+                            </div>
+
+                            <div class="feature-description">
+                                Represents the presence of bare nuclei.
+                            </div>
+
+                        </div>
+
+
+                        <div class="feature">
+
+                            <div class="feature-name">
+                                Bland Chromatin
+                            </div>
+
+                            <div class="feature-description">
+                                Represents chromatin characteristics.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="notice">
+
+                        <strong>Academic AI System:</strong>
+                        This application is intended for educational
+                        and research purposes. Predictions should not
+                        be treated as a medical diagnosis.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 MODEL PERFORMANCE
+            ================================================== -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div class="panel-title">
+                        Model Performance
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Current machine-learning model
+                    </div>
+
+                </div>
+
+
+                <div class="performance">
+
+
+                    <div class="performance-score">
+
+                        <div class="performance-label">
+                            Test Accuracy
+                        </div>
+
+                        <div class="performance-number">
+                            {{ accuracy }}%
+                        </div>
+
+                        <div class="performance-note">
+                            Current recorded model performance
+                        </div>
+
+                    </div>
+
+
+                    <div class="status-list">
+
+
+                        <div class="status-item">
+
+                            <div class="status-info">
+
+                                <span class="status-dot"></span>
+
+                                <span class="status-name">
+                                    AI Model
+                                </span>
+
+                            </div>
+
+                            <span class="status-state">
+                                Active
+                            </span>
+
+                        </div>
+
+
+                        <div class="status-item">
+
+                            <div class="status-info">
+
+                                <span class="status-dot"></span>
+
+                                <span class="status-name">
+                                    FNA Prediction
+                                </span>
+
+                            </div>
+
+                            <span class="status-state">
+                                Ready
+                            </span>
+
+                        </div>
+
+
+                        <div class="status-item">
+
+                            <div class="status-info">
+
+                                <span class="status-dot"></span>
+
+                                <span class="status-name">
+                                    Patient Database
+                                </span>
+
+                            </div>
+
+                            <span class="status-state">
+                                Connected
+                            </span>
+
+                        </div>
+
+
+                        <div class="status-item">
+
+                            <div class="status-info">
+
+                                <span class="status-dot"></span>
+
+                                <span class="status-name">
+                                    PDF Reports
+                                </span>
+
+                            </div>
+
+                            <span class="status-state">
+                                Ready
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+</html>

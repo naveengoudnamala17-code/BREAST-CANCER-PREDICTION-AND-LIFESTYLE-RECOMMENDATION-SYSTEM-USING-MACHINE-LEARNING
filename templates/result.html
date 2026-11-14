@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction Result | Breast Cancer AI</title>
+
+    <style>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #dff6f5 0%,
+                    #edf7f8 35%,
+                    #f3f7f8 70%,
+                    #f8fafb 100%
+                );
+
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .header {
+            background:
+                linear-gradient(
+                    135deg,
+                    #062f3d,
+                    #0b4f60 55%,
+                    #087f7b
+                );
+
+            color: white;
+
+            padding: 24px 50px;
+
+            box-shadow:
+                0 8px 28px rgba(6, 47, 61, 0.20);
+
+            border-bottom:
+                3px solid #2dd4bf;
+        }
+
+        .header-content {
+            max-width: 1150px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ccfbf1,
+                    #a7f3d0
+                );
+
+            color: #065f5b;
+
+            font-size: 23px;
+
+            box-shadow:
+                0 7px 18px rgba(0, 0, 0, 0.12);
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #d5f5f4;
+            letter-spacing: 0.3px;
+        }
+
+        .header-badge {
+            padding: 8px 13px;
+
+            border-radius: 20px;
+
+            background: rgba(255,255,255,0.10);
+
+            border: 1px solid rgba(255,255,255,0.18);
+
+            color: #d9fffb;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        /* =========================================================
+           CONTAINER
+        ========================================================= */
+
+        .container {
+            max-width: 1150px;
+            margin: 38px auto;
+            padding: 0 20px;
+        }
+
+        /* =========================================================
+           PAGE TITLE
+        ========================================================= */
+
+        .report-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .report-title .eyebrow {
+            display: inline-block;
+
+            padding: 6px 11px;
+
+            border-radius: 20px;
+
+            background: #e6fffb;
+            color: #0f766e;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+
+            margin-bottom: 10px;
+        }
+
+        .report-title h2 {
+            font-size: 32px;
+            color: #073b4c;
+            margin-bottom: 7px;
+            font-weight: 800;
+        }
+
+        .report-title p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           MAIN RESULT CARD
+        ========================================================= */
+
+        .result-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    #effbfb,
+                    #e4f5f5 50%,
+                    #eefaf8
+                );
+
+            border-radius: 24px;
+
+            padding: 40px;
+
+            margin-bottom: 25px;
+
+            text-align: center;
+
+            border: 1px solid #a8d9dc;
+
+            box-shadow:
+                0 16px 42px rgba(8, 51, 68, 0.11);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 5px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0f766e,
+                    #0891b2,
+                    #2dd4bf
+                );
+        }
+
+        .result-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            right: -100px;
+            top: -120px;
+
+            background: rgba(45, 212, 191, 0.08);
+
+            border-radius: 50%;
+        }
+
+        .result-icon {
+            width: 64px;
+            height: 64px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .result-icon.benign-icon {
+            background: #d1fae5;
+            color: #047857;
+
+            box-shadow:
+                0 8px 20px rgba(4, 120, 87, 0.12);
+        }
+
+        .result-icon.malignant-icon {
+            background: #fee2e2;
+            color: #b91c1c;
+
+            box-shadow:
+                0 8px 20px rgba(185, 28, 28, 0.12);
+        }
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .status {
+            display: inline-block;
+
+            padding: 13px 40px;
+
+            border-radius: 13px;
+
+            font-size: 26px;
+            font-weight: 800;
+
+            margin-bottom: 18px;
+
+            letter-spacing: 0.8px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .benign {
+            background:
+                linear-gradient(
+                    135deg,
+                    #dcfce7,
+                    #bbf7d0
+                );
+
+            color: #047857;
+
+            border: 1px solid #6ee7b7;
+
+            box-shadow:
+                0 8px 22px rgba(4, 120, 87, 0.12);
+        }
+
+        .malignant {
+            background:
+                linear-gradient(
+                    135deg,
+                    #fee2e2,
+                    #fecaca
+                );
+
+            color: #b91c1c;
+
+            border: 1px solid #fca5a5;
+
+            box-shadow:
+                0 8px 22px rgba(185, 28, 28, 0.12);
+        }
+
+        /* =========================================================
+           CONFIDENCE
+        ========================================================= */
+
+        .confidence {
+            margin-top: 5px;
+
+            font-size: 15px;
+
+            color: #64748b;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .confidence strong {
+            color: #087f8c;
+
+            font-size: 30px;
+
+            margin-left: 6px;
+
+            font-weight: 800;
+        }
+
+        .confidence-label {
+            font-weight: 600;
+        }
+
+        .message {
+            margin-top: 10px;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        /* =========================================================
+           RISK BOX
+        ========================================================= */
+
+        .risk-box {
+            margin-top: 28px;
+
+            padding: 23px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e4f8f6,
+                    #e1f4f7
+                );
+
+            border: 1px solid #9dd3d3;
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.65),
+                0 7px 18px rgba(15, 118, 110, 0.07);
+
+            position: relative;
+            z-index: 2;
+        }
+
+        .risk-title {
+            font-size: 12px;
+
+            font-weight: 800;
+
+            color: #0b5563;
+
+            margin-bottom: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+        .risk {
+            display: inline-block;
+
+            padding: 10px 27px;
+
+            border-radius: 30px;
+
+            font-size: 16px;
+
+            font-weight: 800;
+
+            margin-bottom: 8px;
+        }
+
+        .low-risk {
+            background:
+                linear-gradient(
+                    135deg,
+                    #dcfce7,
+                    #bbf7d0
+                );
+
+            color: #166534;
+
+            border: 1px solid #86efac;
+        }
+
+        .medium-risk {
+            background:
+                linear-gradient(
+                    135deg,
+                    #fef3c7,
+                    #fde68a
+                );
+
+            color: #92400e;
+
+            border: 1px solid #fcd34d;
+        }
+
+        .high-risk {
+            background:
+                linear-gradient(
+                    135deg,
+                    #fee2e2,
+                    #fecaca
+                );
+
+            color: #991b1b;
+
+            border: 1px solid #fca5a5;
+        }
+
+        .risk-box p {
+            margin-top: 5px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        /* =========================================================
+           SECTION CARDS
+        ========================================================= */
+
+        .section {
+            background:
+                linear-gradient(
+                    145deg,
+                    #ffffff,
+                    #f7fbfc
+                );
+
+            border-radius: 19px;
+
+            padding: 28px;
+
+            margin-bottom: 22px;
+
+            border: 1px solid #d8e7ea;
+
+            box-shadow:
+                0 8px 25px rgba(8, 51, 68, 0.07);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 4px;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #0f766e,
+                    #0891b2
+                );
+        }
+
+        .section-heading {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 21px;
+
+            padding-bottom: 13px;
+
+            border-bottom: 1px solid #e2edf0;
+        }
+
+        .section-icon {
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+
+            border-radius: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e0f2fe,
+                    #ccfbf1
+                );
+
+            color: #0f766e;
+
+            font-size: 17px;
+        }
+
+        .section h3 {
+            color: #0a4252;
+
+            font-size: 19px;
+
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            margin-top: 3px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+        /* =========================================================
+           PATIENT INFORMATION
+        ========================================================= */
+
+        .patient-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+        .info-box {
+            background:
+                linear-gradient(
+                    145deg,
+                    #f8fcfd,
+                    #eef8f9
+                );
+
+            border:
+                1px solid #d5e6e9;
+
+            border-radius: 14px;
+
+            padding: 17px;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 9px 20px rgba(15, 118, 110, 0.10);
+
+            border-color: #8fc9cf;
+        }
+
+        .info-top {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 9px;
+        }
+
+        .info-mini-icon {
+            width: 27px;
+            height: 27px;
+
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #e0f2f1;
+
+            color: #0f766e;
+
+            font-size: 12px;
+        }
+
+        .info-label {
+            font-size: 10px;
+
+            color: #087f8c;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+        }
+
+        .info-value {
+            font-size: 16px;
+
+            font-weight: 800;
+
+            color: #203c44;
+
+            padding-left: 36px;
+
+            word-break: break-word;
+        }
+
+        /* =========================================================
+           DIAGNOSTIC FEATURES
+        ========================================================= */
+
+        .feature-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+        }
+
+        .feature {
+            background:
+                linear-gradient(
+                    145deg,
+                    #f9fcfd,
+                    #eff7f8
+                );
+
+            border:
+                1px solid #d6e6e9;
+
+            border-radius: 14px;
+
+            padding: 17px;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+
+            position: relative;
+        }
+
+        .feature:hover {
+            transform: translateY(-3px);
+
+            border-color: #8fc9cf;
+
+            box-shadow:
+                0 9px 20px rgba(15, 118, 110, 0.10);
+        }
+
+        .feature::after {
+            content: "";
+
+            position: absolute;
+
+            right: 12px;
+            top: 12px;
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #5eead4;
+        }
+
+        .feature-name {
+            font-size: 10px;
+
+            color: #087f8c;
+
+            margin-bottom: 8px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            line-height: 1.4;
+
+            padding-right: 10px;
+        }
+
+        .feature-value {
+            font-size: 22px;
+
+            font-weight: 800;
+
+            color: #0a4252;
+        }
+
+        /* =========================================================
+           AI EXPLANATION
+        ========================================================= */
+
+        .explanation-box {
+            background:
+                linear-gradient(
+                    145deg,
+                    #eefaff,
+                    #e8f8f7
+                );
+
+            border-left:
+                5px solid #0891b2;
+
+            padding: 21px;
+
+            border-radius: 12px;
+
+            color: #304b53;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+
+            box-shadow:
+                0 6px 18px rgba(8, 145, 178, 0.06);
+        }
+
+        /* =========================================================
+           RECOMMENDATIONS
+        ========================================================= */
+
+        .recommendation-box {
+            background:
+                linear-gradient(
+                    145deg,
+                    #effcfb,
+                    #e8f7f5
+                );
+
+            border-left:
+                5px solid #0f766e;
+
+            padding: 21px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 6px 18px rgba(15, 118, 110, 0.05);
+        }
+
+        .recommendation-list,
+        .diet-list {
+            padding-left: 22px;
+        }
+
+        .recommendation-list li,
+        .diet-list li {
+            margin-bottom: 11px;
+
+            line-height: 1.65;
+
+            color: #30464d;
+
+            font-size: 13px;
+        }
+
+        .recommendation-list li:last-child,
+        .diet-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* =========================================================
+           DIET
+        ========================================================= */
+
+        .diet-box {
+            background:
+                linear-gradient(
+                    145deg,
+                    #effcf4,
+                    #e5f7eb
+                );
+
+            border-left:
+                5px solid #16a34a;
+
+            padding: 21px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 6px 18px rgba(22, 163, 74, 0.06);
+        }
+
+        /* =========================================================
+           IMPORTANT NOTICE
+        ========================================================= */
+
+        .notice {
+            background:
+                linear-gradient(
+                    145deg,
+                    #fff8e8,
+                    #fff2d5
+                );
+
+            border-left:
+                5px solid #d97706;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            color: #704214;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+
+            box-shadow:
+                0 6px 18px rgba(217, 119, 6, 0.06);
+        }
+
+        .notice-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-weight: 800;
+
+            color: #92400e;
+
+            margin-bottom: 10px;
+        }
+
+        /* =========================================================
+           BUTTONS
+        ========================================================= */
+
+        .actions {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin: 32px 0 20px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+
+            padding: 13px 23px;
+
+            border-radius: 11px;
+
+            font-weight: 800;
+
+            font-size: 13px;
+
+            border: none;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+
+            display: inline-block;
+
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 9px 22px rgba(8, 51, 68, 0.16);
+        }
+
+        .btn-pink {
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e,
+                    #0891b2
+                );
+
+            color: white;
+
+            box-shadow:
+                0 6px 18px rgba(8, 145, 178, 0.18);
+        }
+
+        .btn-primary {
+            background:
+                linear-gradient(
+                    135deg,
+                    #083344,
+                    #155e75
+                );
+
+            color: white;
+
+            box-shadow:
+                0 6px 18px rgba(21, 94, 117, 0.18);
+        }
+
+        .btn-secondary {
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #edf7f8
+                );
+
+            color: #0b5563;
+
+            border:
+                1px solid #9ac4ca;
+
+            box-shadow:
+                0 4px 12px rgba(15, 61, 76, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf8f9,
+                    #dceff1
+                );
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .footer {
+            text-align: center;
+
+            color: #71858c;
+
+            font-size: 11px;
+
+            padding: 25px;
+
+            border-top:
+                1px solid #dbe8ea;
+
+            margin-top: 15px;
+        }
+
+        .footer strong {
+            color: #0f766e;
+        }
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .patient-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .header-content {
+                align-items: flex-start;
+            }
+
+            .header-badge {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .container {
+                margin-top: 24px;
+                padding: 0 14px;
+            }
+
+            .report-title h2 {
+                font-size: 27px;
+            }
+
+            .result-card {
+                padding: 30px 17px;
+            }
+
+            .status {
+                font-size: 21px;
+                padding: 12px 27px;
+            }
+
+            .confidence strong {
+                font-size: 26px;
+            }
+
+            .section {
+                padding: 21px 18px;
+            }
+
+            .patient-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .actions form,
+            .actions a {
+                width: 100%;
+            }
+
+            .actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 390px) {
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card {
+                padding: 27px 14px;
+            }
+
+            .risk-box {
+                padding: 19px 14px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <div class="header">
+
+        <div class="header-content">
+
+            <div class="brand-area">
+
+                <div class="brand-icon">
+                    🩺
+                </div>
+
+                <div>
+                    <h1>Breast Cancer AI</h1>
+
+                    <p>
+                        Wisconsin Diagnostic Prediction System
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="header-badge">
+                AI-Assisted Analysis
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <!-- =====================================================
+             PAGE TITLE
+        ===================================================== -->
+
+        <div class="report-title">
+
+            <div class="eyebrow">
+                Analysis Complete
+            </div>
+
+            <h2>
+                Prediction Result
+            </h2>
+
+            <p>
+                AI-assisted diagnostic assessment based on submitted features
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             MAIN RESULT
+        ===================================================== -->
+
+        <div class="result-card">
+
+            {% if result == "Benign" %}
+
+                <div class="result-icon benign-icon">
+                    ✓
+                </div>
+
+                <div class="status benign">
+                    ✓ BENIGN
+                </div>
+
+                <div class="confidence">
+
+                    <span class="confidence-label">
+                        Model Confidence
+                    </span>
+
+                    <strong>
+                        {{ confidence }}%
+                    </strong>
+
+                </div>
+
+                <div class="message">
+
+                    The model predicts this case as benign.
+
+                </div>
+
+            {% else %}
+
+                <div class="result-icon malignant-icon">
+                    !
+                </div>
+
+                <div class="status malignant">
+                    ⚠ MALIGNANT
+                </div>
+
+                <div class="confidence">
+
+                    <span class="confidence-label">
+                        Model Confidence
+                    </span>
+
+                    <strong>
+                        {{ confidence }}%
+                    </strong>
+
+                </div>
+
+                <div class="message">
+
+                    The model predicts this case as malignant.
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 RISK
+            ================================================= -->
+
+            <div class="risk-box">
+
+                <div class="risk-title">
+                    AI Risk Assessment
+                </div>
+
+                {% if risk_level == "Low Risk" %}
+
+                    <div class="risk low-risk">
+                        LOW RISK
+                    </div>
+
+                    <p>
+                        The AI model indicates a lower estimated
+                        risk based on the submitted diagnostic
+                        features.
+                    </p>
+
+                {% elif risk_level == "Medium Risk" %}
+
+                    <div class="risk medium-risk">
+                        MEDIUM RISK
+                    </div>
+
+                    <p>
+                        The AI model indicates an intermediate
+                        estimated risk based on the submitted
+                        diagnostic features.
+                    </p>
+
+                {% else %}
+
+                    <div class="risk high-risk">
+                        HIGH RISK
+                    </div>
+
+                    <p>
+                        The AI model indicates a higher estimated
+                        risk based on the submitted diagnostic
+                        features.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             PATIENT INFORMATION
+        ===================================================== -->
+
+        <div class="section">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <h3>
+                        Patient Information
+                    </h3>
+
+                    <div class="section-subtitle">
+                        Basic patient details
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="patient-grid">
+
+                <div class="info-box">
+
+                    <div class="info-top">
+
+                        <div class="info-mini-icon">
+                            👤
+                        </div>
+
+                        <div class="info-label">
+                            Patient Name
+                        </div>
+
+                    </div>
+
+                    <div class="info-value">
+                        {{ patient_name }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-top">
+
+                        <div class="info-mini-icon">
+                            #
+                        </div>
+
+                        <div class="info-label">
+                            Age
+                        </div>
+
+                    </div>
+
+                    <div class="info-value">
+                        {{ age }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-top">
+
+                        <div class="info-mini-icon">
+                            ♀
+                        </div>
+
+                        <div class="info-label">
+                            Gender
+                        </div>
+
+                    </div>
+
+                    <div class="info-value">
+                        {{ gender }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             DIAGNOSTIC FEATURES
+        ===================================================== -->
+
+        <div class="section">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    🔬
+                </div>
+
+                <div>
+
+                    <h3>
+                        Diagnostic Features
+                    </h3>
+
+                    <div class="section-subtitle">
+                        Wisconsin Diagnostic Dataset parameters
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="feature-grid">
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Clump Thickness
+                    </div>
+
+                    <div class="feature-value">
+                        {{ clump_thickness }}
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Uniformity of Cell Size
+                    </div>
+
+                    <div class="feature-value">
+                        {{ uniformity_cell_size }}
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Uniformity of Cell Shape
+                    </div>
+
+                    <div class="feature-value">
+                        {{ uniformity_cell_shape }}
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Marginal Adhesion
+                    </div>
+
+                    <div class="feature-value">
+                        {{ marginal_adhesion }}
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Single Epithelial Cell Size
+                    </div>
+
+                    <div class="feature-value">
+                        {{ single_epithelial_cell_size }}
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Bare Nuclei
+                    </div>
+
+                    <div class="feature-value">
+                        {{ bare_nuclei }}
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Bland Chromatin
+                    </div>
+
+                    <div class="feature-value">
+                        {{ bland_chromatin }}
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Normal Nucleoli
+                    </div>
+
+                    <div class="feature-value">
+                        {{ normal_nucleoli }}
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-name">
+                        Mitoses
+                    </div>
+
+                    <div class="feature-value">
+                        {{ mitoses }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             AI EXPLANATION
+        ===================================================== -->
+
+        <div class="section">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    ✨
+                </div>
+
+                <div>
+
+                    <h3>
+                        AI Explanation
+                    </h3>
+
+                    <div class="section-subtitle">
+                        Automated interpretation of the prediction
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="explanation-box">
+
+                {{ explanation }}
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             RECOMMENDATIONS
+        ===================================================== -->
+
+        <div class="section">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <h3>
+                        Personalized Recommendations
+                    </h3>
+
+                    <div class="section-subtitle">
+                        General recommendations based on the prediction
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="recommendation-box">
+
+                <ul class="recommendation-list">
+
+                    {% for recommendation in recommendations %}
+
+                        <li>
+                            {{ recommendation }}
+                        </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             DIET
+        ===================================================== -->
+
+        <div class="section">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    🍎
+                </div>
+
+                <div>
+
+                    <h3>
+                        Personalized Diet & Lifestyle Plan
+                    </h3>
+
+                    <div class="section-subtitle">
+                        General wellness guidance
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="diet-box">
+
+                <ul class="diet-list">
+
+                    {% for item in diet %}
+
+                        <li>
+                            {{ item }}
+                        </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             IMPORTANT NOTICE
+        ===================================================== -->
+
+        <div class="section">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <h3>
+                        Important Notice
+                    </h3>
+
+                    <div class="section-subtitle">
+                        Academic and educational use
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="notice">
+
+                <div class="notice-title">
+                    ⚠ Academic AI System
+                </div>
+
+                This system is an academic AI-based prediction
+                tool intended for educational and research
+                purposes. The prediction should not be considered
+                a medical diagnosis.
+
+                <br><br>
+
+                The confidence score, risk level, recommendations,
+                and diet plan are generated according to the AI
+                model and are intended only as general guidance.
+
+                <br><br>
+
+                A qualified healthcare professional should review
+                clinical findings before making medical decisions.
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             BUTTONS
+        ===================================================== -->
+
+        <div class="actions">
+
+            <!-- PDF DOWNLOAD -->
+
+            <form
+                action="{{ url_for('download_report') }}"
+                method="POST"
+                style="display: inline;"
+            >
+
+                <input
+                    type="hidden"
+                    name="patient_name"
+                    value="{{ patient_name }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="age"
+                    value="{{ age }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="gender"
+                    value="{{ gender }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="result"
+                    value="{{ result }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="confidence"
+                    value="{{ confidence }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="risk_level"
+                    value="{{ risk_level }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="cancer_type"
+                    value="{{ cancer_type }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="explanation"
+                    value="{{ explanation }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="clump_thickness"
+                    value="{{ clump_thickness }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="uniformity_cell_size"
+                    value="{{ uniformity_cell_size }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="uniformity_cell_shape"
+                    value="{{ uniformity_cell_shape }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="marginal_adhesion"
+                    value="{{ marginal_adhesion }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="single_epithelial_cell_size"
+                    value="{{ single_epithelial_cell_size }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="bare_nuclei"
+                    value="{{ bare_nuclei }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="bland_chromatin"
+                    value="{{ bland_chromatin }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="normal_nucleoli"
+                    value="{{ normal_nucleoli }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="mitoses"
+                    value="{{ mitoses }}"
+                >
+
+                <button
+                    type="submit"
+                    class="btn btn-pink"
+                >
+                    📄 Download PDF Report
+                </button>
+
+            </form>
+
+
+            <a
+                href="{{ url_for('prediction') }}"
+                class="btn btn-primary"
+            >
+                🔄 Predict Another Patient
+            </a>
+
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="btn btn-secondary"
+            >
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <div class="footer">
+
+        <strong>Breast Cancer AI</strong>
+        • Wisconsin Diagnostic System
+        • Academic Project
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Breast Cancer AI - Login</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+
+            background: #020617;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+        }
+
+        .login-container {
+            width: 390px;
+
+            background: #0f172a;
+
+            border: 1px solid #123f6b;
+
+            border-radius: 18px;
+
+            padding: 40px;
+
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            text-align: center;
+
+            font-size: 26px;
+
+            font-weight: bold;
+
+            color: #2196f3;
+
+            margin-bottom: 8px;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .subtitle {
+            text-align: center;
+
+            color: #8fa3b8;
+
+            font-size: 14px;
+
+            margin-bottom: 32px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+
+            font-size: 22px;
+
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #b9c7d8;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border-radius: 9px;
+
+            border: 1px solid #334155;
+
+            background: #08111f;
+
+            color: white;
+
+            outline: none;
+
+            font-size: 15px;
+
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #2196f3;
+
+            box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.15);
+        }
+
+        .login-btn {
+            width: 100%;
+
+            padding: 13px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #1976d2;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #2196f3;
+
+            transform: translateY(-1px);
+        }
+
+        .error {
+            background: rgba(220, 38, 38, 0.15);
+
+            border: 1px solid #7f1d1d;
+
+            color: #fca5a5;
+
+            padding: 10px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-top: 25px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="logo">
+            🩺 Breast Cancer <span>AI</span>
+        </div>
+
+        <div class="subtitle">
+            Wisconsin Breast Cancer Diagnostic System
+        </div>
+
+
+        <h2>
+            Login
+        </h2>
+
+
+        {% if error %}
+
+        <div class="error">
+            {{ error }}
+        </div>
+
+        {% endif %}
+
+
+        <form action="{{ url_for('login') }}" method="POST">
+
+            <div class="form-group">
+
+                <label for="name">
+                    Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    required
+                    autocomplete="name">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                    autocomplete="current-password">
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-btn">
+
+                Login
+
+            </button>
+
+        </form>
+
+
+        <div class="footer">
+            Breast Cancer AI Prediction System
+        </div>
+
+    </div>
+
+</body>
+
+</html>

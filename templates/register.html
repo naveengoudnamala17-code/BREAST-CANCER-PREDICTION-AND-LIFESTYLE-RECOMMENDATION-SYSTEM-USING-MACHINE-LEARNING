@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register | Breast Cancer AI</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+    min-height: 100vh;
+}
+
+/* ==============================
+   HEADER
+============================== */
+
+.header {
+    background: #17365d;
+    color: white;
+    padding: 22px 50px;
+}
+
+.header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+/* ==============================
+   MAIN
+============================== */
+
+.container {
+    max-width: 480px;
+    margin: 55px auto;
+    padding: 0 20px;
+}
+
+/* ==============================
+   TITLE
+============================== */
+
+.page-title {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.page-title h2 {
+    font-size: 30px;
+    color: #17365d;
+    margin-bottom: 8px;
+}
+
+.page-title p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* ==============================
+   REGISTER CARD
+============================== */
+
+.register-card {
+    background: white;
+    border-radius: 14px;
+    padding: 35px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ==============================
+   FORM
+============================== */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #17365d;
+    box-shadow: 0 0 0 3px rgba(23, 54, 93, 0.10);
+}
+
+/* ==============================
+   BUTTON
+============================== */
+
+.register-button {
+    width: 100%;
+    padding: 14px;
+    background: #17365d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.register-button:hover {
+    background: #0f2745;
+}
+
+/* ==============================
+   ERROR
+============================== */
+
+.error-message {
+    background: #fee2e2;
+    border-left: 5px solid #dc2626;
+    color: #991b1b;
+    padding: 13px;
+    border-radius: 7px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+/* ==============================
+   SUCCESS
+============================== */
+
+.success-message {
+    background: #dcfce7;
+    border-left: 5px solid #16a34a;
+    color: #166534;
+    padding: 13px;
+    border-radius: 7px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+/* ==============================
+   LOGIN LINK
+============================== */
+
+.login-link {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.login-link a {
+    color: #17365d;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* ==============================
+   INFORMATION
+============================== */
+
+.info-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: #eff6ff;
+    border-left: 5px solid #2563eb;
+    border-radius: 7px;
+    color: #1e3a8a;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* ==============================
+   FOOTER
+============================== */
+
+.footer {
+    text-align: center;
+    color: #6b7280;
+    font-size: 12px;
+    padding: 20px;
+}
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 18px 20px;
+    }
+
+    .container {
+        margin-top: 30px;
+    }
+
+    .register-card {
+        padding: 25px 20px;
+    }
+
+    .page-title h2 {
+        font-size: 25px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- ==============================
+     HEADER
+============================== -->
+
+<div class="header">
+
+    <div>
+
+        <h1>
+            Breast Cancer AI
+        </h1>
+
+        <p>
+            Wisconsin Diagnostic Prediction System
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ==============================
+     MAIN
+============================== -->
+
+<div class="container">
+
+
+    <!-- TITLE -->
+
+    <div class="page-title">
+
+        <h2>
+            Create Account
+        </h2>
+
+        <p>
+            Register to access the Breast Cancer AI system
+        </p>
+
+    </div>
+
+
+    <!-- REGISTER CARD -->
+
+    <div class="register-card">
+
+
+        <!-- ERROR MESSAGE -->
+
+        {% if error %}
+
+        <div class="error-message">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- SUCCESS MESSAGE -->
+
+        {% if success %}
+
+        <div class="success-message">
+
+            {{ success }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- REGISTER FORM -->
+
+        <form
+            method="POST"
+            action="{{ url_for('register') }}"
+        >
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    placeholder="Confirm your password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="register-button"
+            >
+                Create Account
+            </button>
+
+
+        </form>
+
+
+        <!-- INFORMATION -->
+
+        <div class="info-box">
+
+            Your account allows you to access the
+            Breast Cancer AI dashboard and prediction
+            system.
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="{{ url_for('login') }}">
+                Login here
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- ==============================
+     FOOTER
+============================== -->
+
+<div class="footer">
+
+    Breast Cancer AI • Wisconsin Diagnostic System
+
+</div>
+
+
+</body>
+
+</html>
