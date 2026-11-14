@@ -59,7 +59,7 @@ The model predicts two classes:
 
 - Benign
 - Malignant
-- 
+
 ## Model Performance
 
 The Random Forest model achieved the following results on the test dataset:
