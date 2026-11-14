@@ -59,7 +59,20 @@ The model predicts two classes:
 
 - Benign
 - Malignant
+- 
+## Model Performance
 
+The Random Forest model achieved the following results on the test dataset:
+
+| Evaluation Metric | Result |
+|---|---:|
+| Validation Accuracy | 95.65% |
+| Test Accuracy | 97.14% |
+| Precision | 95.83% |
+| Recall | 95.83% |
+| Specificity | 97.83% |
+| F1 Score | 95.83% |
+| ROC-AUC | 0.9955 |
 ## Project Workflow
 
 1. Dataset loading
