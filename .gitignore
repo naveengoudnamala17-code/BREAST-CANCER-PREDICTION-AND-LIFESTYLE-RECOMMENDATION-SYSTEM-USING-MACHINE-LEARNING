@@ -229,3 +229,6 @@ database.db
 .env
 
 static/reports/*.pdf
+
+model_comparison.csv
+
