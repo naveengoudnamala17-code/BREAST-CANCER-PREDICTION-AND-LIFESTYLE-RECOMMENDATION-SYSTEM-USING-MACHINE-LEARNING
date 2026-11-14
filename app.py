@@ -35,7 +35,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-app.secret_key = "breast_cancer_wisconsin_secret_key"
+app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(32)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
